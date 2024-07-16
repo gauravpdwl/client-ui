@@ -59,7 +59,7 @@ export default function Home() {
                         </Button>
                     </div>
                     <div>
-                        <Image alt="pizza-main" src={'/pizza-main.png'} width={400} height={400} />
+                        <Image alt="pizza-main" src={'/pizza-main.png'} width={400} height={400} priority  />
                     </div>
                 </div>
             </section>
