@@ -1,3 +1,4 @@
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import React from 'react';
 import ProductCard from './productCard';
@@ -20,7 +21,7 @@ const ProductList = async () => {
     // todo: add pagination
     const productsResponse = await fetch(
         // todo: add dynamic tenantId
-        `${process.env.BACKEND_URL}/api/catalog/products?perPage=100&tenantId=3`,
+        `${process.env.BACKEND_URL}/api/catalog/products?perPage=100&tenantId=2`,
         {
             next: {
                 revalidate: 3600, // 1 hour
