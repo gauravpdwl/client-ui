@@ -7,7 +7,7 @@ import { ShoppingCart } from 'lucide-react';
 import React, { startTransition, Suspense, useState } from 'react';
 import ToppingList from './topping-list';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Product } from '@/lib/types';
+import { Product, Topping } from '@/lib/types';
 import { Label } from '@/components/ui/label';
 
 type ChosenConfig = {
@@ -17,6 +17,23 @@ type ChosenConfig = {
 const ProductModal = ({ product }: { product: Product }) => {
 
     const [chosenConfig, setChosenConfig] = useState<ChosenConfig>();
+
+    const [selectedToppings, setSelectedToppings] = React.useState<Topping[]>([]);
+
+    const handleCheckBoxCheck = (topping: Topping) => {
+        const isAlreadyExists = selectedToppings.some(
+            (element: Topping) => element.id === topping.id
+        );
+
+        startTransition(() => {
+            if (isAlreadyExists) {
+                setSelectedToppings((prev) => prev.filter((elm: Topping) => elm.id !== topping.id));
+                return;
+            }
+
+            setSelectedToppings((prev: Topping[]) => [...prev, topping]);
+        });
+    };
 
     const handleAddToCart = () => {
         // todo: add to cart logic
@@ -92,7 +109,10 @@ const ProductModal = ({ product }: { product: Product }) => {
                         })}
 
                         <Suspense fallback={'Toppings loading...'}>
-                            <ToppingList />
+                            <ToppingList 
+                                selectedToppings={selectedToppings}
+                                handleCheckBoxCheck={handleCheckBoxCheck}
+                            />
                         </Suspense>
 
                         <div className="flex items-center justify-between mt-12">
