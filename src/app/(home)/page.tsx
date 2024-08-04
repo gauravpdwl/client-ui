@@ -7,7 +7,7 @@ import React from 'react';
 
 // const ProductList = React.lazy(() => import('./components/product-list'));
 
-export default async function Home() {
+export default async function Home({ searchParams }: { searchParams: { restaurantId: string } }) {
     return (
         <>
             <section className="bg-white">
@@ -31,7 +31,7 @@ export default async function Home() {
             </section>
             {/* todo: add skeleton component */}
             <Suspense fallback={<Skeleton className="w-[100px] h-[20px] rounded-full" />}>
-                <ProductList />
+                <ProductList searchParams={searchParams} />
             </Suspense>
         </>
     );
