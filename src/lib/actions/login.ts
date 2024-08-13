@@ -10,7 +10,7 @@ export default async function login(prevState: any, formdata: FormData) {
     // call auth service
 
     try {
-        const response = await fetch(`${process.env.BACKEND_URL}/api/auth/auth/login`, {
+        const response = await fetch(`${process.env.backend_url}/api/auth/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ export default async function login(prevState: any, formdata: FormData) {
             console.log('error', error);
             return {
                 type: 'error',
-                message: error.errors[0].message,
+                message: error.errors[0].msg,
             };
         }
 
