@@ -15,6 +15,8 @@ const Header = async () => {
 
     const session = await getSession();
 
+    // console.log("session ------------", session);
+
     const tenantsResponse = await fetch(`${process.env.BACKEND_URL}/api/auth/tenants/all?perPage=100`, {
         next: {
             revalidate: 3600, // 1 hour
