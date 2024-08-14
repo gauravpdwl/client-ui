@@ -39,7 +39,8 @@ export default function Checkout() {
                         <div className="grid gap-3">
                             <div>
                                 <div className="flex items-center justify-between">
-                                    <Label htmlFor="name">Address</Label>
+                                    {/* <Label htmlFor="name">Address</Label> */}
+                                    <Label >Address</Label>
                                     <Dialog>
                                         <DialogTrigger asChild>
                                             <Button size={'sm'} variant={'link'}>
@@ -158,7 +159,7 @@ export default function Checkout() {
                     </div>
                     <div className="flex items-center gap-4">
                         <Input
-                            id="fname"
+                            id="couponcode"
                             type="text"
                             className="w-full"
                             placeholder="Coupon code"
