@@ -33,6 +33,7 @@ export default function RootLayout({
                         <Refresher>
                             <Header />
                             <main>{children}</main>
+                            {/* pop-up message appears when items added to cart */}
                             <Toaster />
                         </Refresher>
                     </QueryProvider>
