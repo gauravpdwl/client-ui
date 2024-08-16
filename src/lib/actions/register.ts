@@ -22,6 +22,7 @@ export default async function register(prevState: any, formdata: FormData) {
                 lastName,
                 email,
                 password,
+                role:"customer"
             }),
         });
 
