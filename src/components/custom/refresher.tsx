@@ -41,6 +41,12 @@ const Refresher = ({ children }: { children: React.ReactNode }) => {
                 `Scheduled refresh time: ${new Date(currentTime + refreshTime).toISOString()}`
             );
 
+            // my logic
+
+            if(refreshTime < 0){
+                return;
+            }
+
             timeoutId.current = setTimeout(() => {
                 refreshAccessToken();
                 console.log('Access token is refreshing...');
