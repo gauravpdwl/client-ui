@@ -5,6 +5,9 @@ docker run --rm --name mern_postgres_dbserver -e POSTGRES_USER=root -e POSTGRES_
 # docker run -d --name mongodb -v mernmongodbdata:/var/lib/mongodb/data -p 27017:27017 mongo
 docker run -d --name mongodb -p 27017:27017 mongo
 
+**path to launch micro-services
+/mnt/c/ReactNodeProjects/MERN_Stack_Project/
+
 {
   "name": "Bevarage",
   "priceConfiguration": {
