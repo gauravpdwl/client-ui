@@ -7,9 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Textarea } from '@/components/ui/textarea';
-import { getCustomer } from '@/lib/http/api';
-import { Customer } from '@/lib/types';
-import { useQuery } from '@tanstack/react-query';
+import { getCustomer, createOrder } from '@/lib/http/api';
+import { Customer, OrderData } from '@/lib/types';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { Coins, CreditCard, Plus } from 'lucide-react';
 import React from 'react';
 import AddAdress from './addAddress';
@@ -18,6 +18,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { z } from 'zod';
+import { v4 as uuidv4 } from 'uuid';
 import OrderSummary from './orderSummary';
 import { useSearchParams } from 'next/navigation';
 import { useAppSelector } from '@/lib/store/hooks';
@@ -39,6 +40,8 @@ const CustomerForm = () => {
     const searchParam = useSearchParams();
 
     const chosenCouponCode = React.useRef('');
+    const idempotencyKeyRef = React.useRef('');
+    
     const cart = useAppSelector((state) => state.cart);
 
     const { data: customer, isLoading } = useQuery<Customer>({
@@ -46,6 +49,18 @@ const CustomerForm = () => {
         queryFn: async () => {
             return await getCustomer().then((res) => res.data);
         },
+    });
+
+    const { mutate } = useMutation({
+        mutationKey: ['order'],
+        mutationFn: async (data: OrderData) => {
+            const idempotencyKey = idempotencyKeyRef.current
+                ? idempotencyKeyRef.current
+                : (idempotencyKeyRef.current = uuidv4() + customer?._id);
+
+            await createOrder(data, idempotencyKey);
+        },
+        retry: 3,
     });
 
     if (isLoading) {
@@ -61,17 +76,17 @@ const CustomerForm = () => {
             alert('Restaurant Id is required!');
             return;
         }
-        const orderData = {
+        const orderData: OrderData = {
             cart: cart.cartItems,
             couponCode: chosenCouponCode.current ? chosenCouponCode.current : '',
             tenantId: tenantId,
-            customerId: customer?._id,
+            customerId: customer ? customer._id : '',
             comment: data.comment,
             address: data.address,
             paymentMode: data.paymentMode,
         };
 
-        console.log('Data', orderData);
+        mutate(orderData);
     };
 
     return (
