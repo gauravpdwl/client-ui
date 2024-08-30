@@ -6,6 +6,7 @@ import { useAppSelector } from '@/lib/store/hooks';
 import { CouponCodeData } from '@/lib/types';
 import { getItemTotal } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
+import { LoaderCircle } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import React from 'react';
 
@@ -16,8 +17,10 @@ const DELIVERY_CHARGES = 100;
 
 const OrderSummary = ({
     handleCouponCodeChange,
+    isPlaceOrderPending
 }: {
     handleCouponCodeChange: (code: string) => void;
+    isPlaceOrderPending: boolean;
 }) => {
 
     const searchParam = useSearchParams();
@@ -147,7 +150,16 @@ const OrderSummary = ({
                 </div>
 
                 <div className="text-right mt-6">
-                    <Button>Place order</Button>
+                <Button disabled={isPlaceOrderPending}>
+                        {isPlaceOrderPending ? (
+                            <span className="flex items-center gap-2">
+                                <LoaderCircle className="animate-spin" />
+                                <span>Please wait...</span>
+                            </span>
+                        ) : (
+                            <span>Place order</span>
+                        )}
+                    </Button>
                 </div>
             </CardContent>
         </Card>
